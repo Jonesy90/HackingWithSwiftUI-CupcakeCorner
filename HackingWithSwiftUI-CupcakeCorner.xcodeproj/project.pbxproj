@@ -10,9 +10,22 @@
 		B2FB87112FE6CA98001B31A6 /* HackingWithSwiftUI-CupcakeCorner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HackingWithSwiftUI-CupcakeCorner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B2FB87782FEA7789001B31A6 /* Exceptions for "HackingWithSwiftUI-CupcakeCorner" folder in "HackingWithSwiftUI-CupcakeCorner" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B2FB87102FE6CA98001B31A6 /* HackingWithSwiftUI-CupcakeCorner */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B2FB87132FE6CA98001B31A6 /* HackingWithSwiftUI-CupcakeCorner */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B2FB87782FEA7789001B31A6 /* Exceptions for "HackingWithSwiftUI-CupcakeCorner" folder in "HackingWithSwiftUI-CupcakeCorner" target */,
+			);
 			path = "HackingWithSwiftUI-CupcakeCorner";
 			sourceTree = "<group>";
 		};
@@ -256,6 +269,7 @@
 				DEVELOPMENT_TEAM = 7TZP8288QD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "HackingWithSwiftUI-CupcakeCorner/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -288,6 +302,7 @@
 				DEVELOPMENT_TEAM = 7TZP8288QD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "HackingWithSwiftUI-CupcakeCorner/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
