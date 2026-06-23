@@ -31,8 +31,9 @@ struct CheckoutView: View {
                     .font(.title)
                 
                 Button("Place Order") {
+                    /// Task is used to create a new unit of asynchronous work. When using Task, you can starting a new concurrent task. This allows you to run code asynchronously without blocking the main thread (which keeps the UI responsive).
                     Task {
-                        await placeOrder()
+                        await placeOrder() /// The 'await' keyword is used to call an asynchronous function 'placeOrder'. This function will run asynchronously within the new task.
                     }
                 }
                 .padding()
