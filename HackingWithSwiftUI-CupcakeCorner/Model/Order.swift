@@ -39,15 +39,34 @@ class Order: Codable {
     var extraFrosting = false
     var addSprinkles = false
     
-    var name = ""
-    var streetAddress = ""
-    var city = ""
-    var postcode = ""
+    /// The 'didSet' block runs every time the property is set to a new value or the same value as before.
+    /// When the name is updated, the new value is saved to UserDefaults using the key "name".
+    var name: String {
+        didSet {
+            UserDefaults.standard.set(name, forKey: "name")
+        }
+    }
+    var streetAddress: String {
+        didSet {
+            UserDefaults.standard.set(streetAddress, forKey: "streetAddress")
+        }
+    }
+    var city: String {
+        didSet {
+            UserDefaults.standard.set(city, forKey: "city")
+        }
+    }
+    var postcode: String {
+        didSet {
+            UserDefaults.standard.set(postcode, forKey: "postcode")
+        }
+    }
     
     var hasValidAddress: Bool {
-        if name.isEmpty || streetAddress.isEmpty || city.isEmpty || postcode.isEmpty {
+        if name.isReallyEmpty || streetAddress.isReallyEmpty || city.isReallyEmpty || postcode.isEmpty {
             return false
         }
+        
         return true
     }
     
@@ -69,5 +88,15 @@ class Order: Codable {
         }
         
         return cost
+    }
+    
+    /// A custom initialiser to setup the Order object when it's first created.
+    /// For each property, it tries to load a stored value from UserDefaults using the corresponding key.
+    /// If nothing is stored yet, an empty string will be returned.
+    init() {
+        name = UserDefaults.standard.string(forKey: "name") ?? ""
+        streetAddress = UserDefaults.standard.string(forKey: "streetAddress") ?? ""
+        city = UserDefaults.standard.string(forKey: "city") ?? ""
+        postcode = UserDefaults.standard.string(forKey: "postcode") ?? ""
     }
 }
