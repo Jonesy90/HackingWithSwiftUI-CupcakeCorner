@@ -3,7 +3,7 @@
 ## Description
 TBC
 
-## What I Learn't
+## What I Learned
 TBC
 
 ## What it looks like
