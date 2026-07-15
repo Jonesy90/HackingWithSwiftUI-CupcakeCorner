@@ -5,6 +5,16 @@
 //  Created by Michael Jones on 22/06/2026.
 //
 
+/*
+ Challenges
+ 
+ 1. Our address fields are currently considered valid if they contain anything, even if it’s just only whitespace. Improve the validation to make sure a string of pure whitespace is invalid.
+
+ 2. If our call to placeOrder() fails – for example if there is no internet connection – show an informative alert for the user. To test this, try commenting out the request.httpMethod = "POST" line in your code, which should force the request to fail.
+ 
+ 3. For a more challenging task, try updating the Order class so it saves data such as the user's delivery address to UserDefaults. This takes a little thinking, because @AppStorage won't work here, and you'll find getters and setters cause problems with Codable support. Can you find a middle ground?
+*/
+
 import SwiftUI
 
 struct CheckoutView: View {
@@ -12,6 +22,9 @@ struct CheckoutView: View {
     
     @State private var confirmationMessage = ""
     @State private var showingConfirmation = false
+    
+    @State private var errorMessage = ""
+    @State private var showingError = false
     
     var body: some View {
         ScrollView {
@@ -31,8 +44,9 @@ struct CheckoutView: View {
                     .font(.title)
                 
                 Button("Place Order") {
+                    /// Task is used to create a new unit of asynchronous work. When using Task, you can starting a new concurrent task. This allows you to run code asynchronously without blocking the main thread (which keeps the UI responsive).
                     Task {
-                        await placeOrder()
+                        await placeOrder() /// The 'await' keyword is used to call an asynchronous function 'placeOrder'. This function will run asynchronously within the new task.
                     }
                 }
                 .padding()
@@ -45,6 +59,11 @@ struct CheckoutView: View {
             Button("OK") {}
         } message: {
             Text(confirmationMessage)
+        }
+        .alert("Whoops", isPresented: $showingError) {
+            Button("OK") {}
+        } message: {
+            Text(errorMessage)
         }
     }
     
@@ -68,7 +87,8 @@ struct CheckoutView: View {
             confirmationMessage = "Your order for \(decodedOrder.quantity)x \(Order.types[decodedOrder.type].lowercased()) cupcakes is on its way!"
             showingConfirmation = true
         } catch {
-            print("Checkout Failed: \(error.localizedDescription)")
+            errorMessage = "Checkout Failed: \(error.localizedDescription)"
+            showingError = true
         }
         
     }
