@@ -9,12 +9,12 @@ import SwiftUI
 
 struct CheckoutView: View {
     @Bindable var order: Order
+    @State private var viewModel: ViewModel
     
-    @State private var confirmationMessage = ""
-    @State private var showingConfirmation = false
-    
-    @State private var errorMessage = ""
-    @State private var showingError = false
+    init(order: Order) {
+        self.order = order
+        _viewModel = State(initialValue: ViewModel(order: order))
+    }
     
     var body: some View {
         ScrollView {
@@ -30,13 +30,13 @@ struct CheckoutView: View {
                 }
                 .frame(height: 233)
                 
-                Text("Your total cost is: \(order.cost, format: .currency(code: "GBP"))")
+                Text("Your total cost is: \(viewModel.order.cost, format: .currency(code: "GBP"))")
                     .font(.title)
                 
                 Button("Place Order") {
                     /// Task is used to create a new unit of asynchronous work. When using Task, you can starting a new concurrent task. This allows you to run code asynchronously without blocking the main thread (which keeps the UI responsive).
                     Task {
-                        await placeOrder() /// The 'await' keyword is used to call an asynchronous function 'placeOrder'. This function will run asynchronously within the new task.
+                        await viewModel.placeOrder() /// The 'await' keyword is used to call an asynchronous function 'placeOrder'. This function will run asynchronously within the new task.
                     }
                 }
                 .padding()
@@ -45,42 +45,16 @@ struct CheckoutView: View {
         .navigationTitle("Checkout")
         .navigationBarTitleDisplayMode(.inline)
         .scrollBounceBehavior(.basedOnSize)
-        .alert("Thank You!", isPresented: $showingConfirmation) {
+        .alert("Thank You!", isPresented: $viewModel.showingConfirmation) {
             Button("OK") {}
         } message: {
-            Text(confirmationMessage)
+            Text(viewModel.confirmationMessage)
         }
-        .alert("Whoops", isPresented: $showingError) {
+        .alert("Whoops", isPresented: $viewModel.showingError) {
             Button("OK") {}
         } message: {
-            Text(errorMessage)
+            Text(viewModel.errorMessage)
         }
-    }
-    
-    private func placeOrder() async {
-        /// Tries to convert the order object into JSON.
-        guard let encoded = try? JSONEncoder().encode(order) else {
-            print("Failed to encode order")
-            return
-        }
-        
-        let url = URL(string: "https://reqres.in/api/cupcakes")!
-        var request = URLRequest(url: url) /// This is used to configure how you want to communicated with the web server (e.g., HTTP).
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type") /// Sets the HTTP Header of the request. This tells the server that the body of the HTTP request is formatted as JSON.
-        request.httpMethod = "POST" /// Sets the HTTP method of the request to POST (a post request is typically used to send data to a server).
-        
-        /// This block of code attempts to send the order to the server.
-        do {
-            let (data, _) = try await URLSession.shared.upload(for: request, from: encoded) /// Asynchronously uploads the data to the server using the given request.
-            
-            let decodedOrder = try JSONDecoder().decode(Order.self, from: data) /// Decoding the servers response of the Order type.
-            confirmationMessage = "Your order for \(decodedOrder.quantity)x \(Order.types[decodedOrder.type].lowercased()) cupcakes is on its way!"
-            showingConfirmation = true
-        } catch {
-            errorMessage = "Checkout Failed: \(error.localizedDescription)"
-            showingError = true
-        }
-        
     }
 }
 
